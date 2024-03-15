@@ -13,6 +13,7 @@ const getUsers = async () => {
 
         const dataUsers = await responsive.json()
         console.log(dataUsers.results);
+        showUsers(dataUsers.results)
 
 
     }catch(error){
@@ -26,22 +27,31 @@ const showUsers = (user) => {
     const defaultImg = "./img/error.gif"
     const cardDiv = document.querySelector(".card")
 
-    user.forEach(({picture, name, email, phone, gender}) => {
+    user.forEach(({picture, name , email, phone, gender}) => {
+
+        if(gender == "male"){
+            containerDiv.classList.add("male")
+            btn.classList.add("btn-male")
+        }else{
+            containerDiv.classList.add("female")
+            btn.classList.add("btn-female")
+            cardDiv.classList.add("female-color")
+        }
 
         cardDiv.innerHTML =`
             <img src="${picture.large || defaultImg}" class="card-image-top" alt="picture">
             <div class="card-body">
-            <h5 class="card-title">${name}</h5>
-            
+            <h5 class="card-title">${Object.values(name).join(" ")}</h5>
+            <p>${email}</p>
+            <p>${phone}</p>
+            <a href="${email}" class="btn btn-primary">Send Message</a>
+            </div>
         `
-        
     });
-
-
-
 }
 
+const btn = document.querySelector("button")
 
-
+btn.addEventListener("click", () => window.location.reload())
 
 getUsers()
